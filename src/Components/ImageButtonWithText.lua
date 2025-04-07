@@ -98,7 +98,7 @@ function ImageButtonWithTextClass.new(name: string, layoutOrder: number, icon: s
   local function updateButtonVisual()
     self:_UpdateButtonVisual()
   end
-  settings().Studio.ThemeChanged:Connect(updateButtonVisual)
+  GuiUtilities.BindThemeChanged(updateButtonVisual)
 
   self:_UpdateButtonVisual()
 
@@ -109,9 +109,9 @@ function ImageButtonWithTextClass:_UpdateButtonVisual()
   -- Possibilties:
   if (self._clicked) then 
     -- This covers 'clicked and selected' or 'clicked'
-    self._button.BackgroundColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Button, 
+    self._button.BackgroundColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Button, 
       Enum.StudioStyleGuideModifier.Selected)
-    self._button.BorderColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Border, 
+    self._button.BorderColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Border, 
       Enum.StudioStyleGuideModifier.Selected)
     if (self._selected) then 
       self._button.BackgroundTransparency = GuiUtilities.kButtonBackgroundIntenseTransparency
@@ -120,9 +120,9 @@ function ImageButtonWithTextClass:_UpdateButtonVisual()
     end
   elseif (self._hovered) then 
     -- This covers 'hovered and selected' or 'hovered'
-    self._button.BackgroundColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Button, 
+    self._button.BackgroundColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Button, 
       Enum.StudioStyleGuideModifier.Hover)
-    self._button.BorderColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Border, 
+    self._button.BorderColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Border, 
       Enum.StudioStyleGuideModifier.Hover)
     if (self._selected) then 
       self._button.BackgroundTransparency = GuiUtilities.kButtonBackgroundIntenseTransparency
@@ -131,15 +131,15 @@ function ImageButtonWithTextClass:_UpdateButtonVisual()
     end
   elseif (self._selected) then 
     -- This covers 'selected'
-    self._button.BackgroundColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Button, 
+    self._button.BackgroundColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Button, 
       Enum.StudioStyleGuideModifier.Selected)
-    self._button.BorderColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Border, 
+    self._button.BorderColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Border, 
       Enum.StudioStyleGuideModifier.Selected)
     self._button.BackgroundTransparency = GuiUtilities.kButtonBackgroundTransparency
   else
     -- This covers 'no special state'
-    self._button.BackgroundColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Button)
-    self._button.BorderColor3 = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.Border)
+    self._button.BackgroundColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Button)
+    self._button.BorderColor3 = GuiUtilities.GetThemeColor(Enum.StudioStyleGuideColor.Border)
     self._button.BackgroundTransparency = 1
   end
 end
