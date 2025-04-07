@@ -92,4 +92,16 @@ function VerticallyScalingListFrameClass:SetVerticalAlignment(alignment: Enum.Ve
   self._uiListLayout.VerticalAlignment = alignment
 end
 
+--- Sets the fill direction of the UIListLayout inside the frame.
+--- @param fillDirection Enum.FillDirection -- The direction in which UI elements will be laid out (Vertical or Horizontal).
+function VerticallyScalingListFrameClass:SetFillDirection(fillDirection: Enum.FillDirection)
+  self._uiListLayout.FillDirection = fillDirection
+end
+
+--- Sets the padding between UI elements in the list layout.
+--- @param padding UDim -- The space to apply between child elements.
+function VerticallyScalingListFrameClass:SetLayoutPadding(padding: UDim)
+  self._uiListLayout.Padding = padding
+end
+
 return VerticallyScalingListFrameClass
