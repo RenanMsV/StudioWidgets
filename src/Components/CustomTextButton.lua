@@ -160,7 +160,7 @@ function CustomTextButtonClass:SetSize(size: UDim2)
 end
 
 --- Sets the function to be called when the button is clicked.
---- @param cf function -- A callback function with parameters (inputObject: InputObject, timesPressed: number). If nil is received it will remove the function.
+--- @param cf (inputObject: InputObject, timesPressed: number) -> () -- A callback function or nil to remove the function.
 function CustomTextButtonClass:SetClickedFunction(cf: (inputObject: InputObject, timesPressed: number) -> () | nil)
   self._clickedFunction = cf
 end
