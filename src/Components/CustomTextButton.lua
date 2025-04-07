@@ -18,6 +18,8 @@ CustomTextButtonClass.__index = CustomTextButtonClass
 function CustomTextButtonClass.new(nameSuffix: string, labelText: string, square: boolean?)
   local self = {}
   setmetatable(self, CustomTextButtonClass)
+
+  self._clickedFunction = nil
   
   local frame = Instance.new("Frame")
   frame.Name = "ButtonFrame  " .. nameSuffix
@@ -95,6 +97,12 @@ function CustomTextButtonClass.new(nameSuffix: string, labelText: string, square
     end
   end)
 
+  button.Activated:Connect(function (inputObject, timesPressed)
+    if self._clickedFunction then
+      self._clickedFunction(inputObject, timesPressed)
+    end
+  end)
+
   self:_UpdateButtonVisual()
 
   return self
@@ -149,6 +157,12 @@ end
 --- @param size UDim2 -- The desired size for the frame.
 function CustomTextButtonClass:SetSize(size: UDim2)
   self._frame.Size = size + UDim2.fromOffset(0, -GuiUtilities.kButtonVerticalFudge)
+end
+
+--- Sets the function to be called when the button is clicked.
+--- @param cf function -- A callback function with parameters (inputObject: InputObject, timesPressed: number). If nil is received it will remove the function.
+function CustomTextButtonClass:SetClickedFunction(cf: (inputObject: InputObject, timesPressed: number) -> () | nil)
+  self._clickedFunction = cf
 end
 
 return CustomTextButtonClass
