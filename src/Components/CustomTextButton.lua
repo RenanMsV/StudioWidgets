@@ -29,11 +29,13 @@ function CustomTextButtonClass.new(nameSuffix: string, labelText: string, square
   
   local button = Instance.new('TextButton')
   button.Name = nameSuffix
+  button.AnchorPoint = Vector2.new(0, 0.5)
   button.BackgroundTransparency = 0
   button.AutoButtonColor = false
   button.Text = labelText
   button.Font = Enum.Font.SourceSans
   button.TextSize = 15
+  button.Position = UDim2.new(0, 0, 0.5, 0)
   button.Size = UDim2.new(1, 0, 1, GuiUtilities.kButtonVerticalFudge)
   button.Parent = frame
   
