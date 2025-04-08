@@ -52,7 +52,14 @@ module.kMainFrame = nil
 --- @return boolean Returns true if the average RGB value of the main background is below 0.5 (darker theme).
 function module.ShouldUseIconsForDarkerBackgrounds()
   local mainColor = settings().Studio.Theme:GetColor(Enum.StudioStyleGuideColor.MainBackground)
-  return (mainColor.r + mainColor.g + mainColor.b) / 3 < 0.5
+  return (mainColor.R + mainColor.G + mainColor.B) / 3 < 0.5
+end
+
+--- Calculates the average brightness of a given Color3.
+--- @param color Color3 -- The color to evaluate.
+--- @return number -- The average brightness (0 to 1).
+function module.GetColorOverallBrightness(color: Color3): number
+  return (color.R + color.G + color.B) / 3
 end
 
 --- Stores a reference to the given frame to be used as the main UI container.
