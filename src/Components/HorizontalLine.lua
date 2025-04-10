@@ -21,7 +21,7 @@ function HorizontalLineClass.new(nameSuffix: string, height: number?, color: Col
   local self = setmetatable({}, HorizontalLineClass)
   
   local frame = Instance.new("Frame")
-  frame.Name = "HLN " .. nameSuffix
+  frame.Name = "HLF " .. nameSuffix
   frame.BackgroundTransparency = 0
   frame.BorderSizePixel = 0
   frame.Size = UDim2.new(1, 0, 0, height or GuiUtilities.kStandardPropertyHeight)

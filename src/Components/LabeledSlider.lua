@@ -36,7 +36,7 @@ function LabeledSliderClass.new(nameSuffix: string, labelText: string, minValue:
   defaultValue = defaultValue or 1
   width = width or kSliderWidth
 
-  local frame = GuiUtilities.MakeStandardFixedHeightFrame('Slider' .. nameSuffix)
+  local frame = GuiUtilities.MakeStandardFixedHeightFrame("SLF" .. nameSuffix)
   self._frame = frame
 
   local label = GuiUtilities.MakeStandardPropertyLabel(labelText)
