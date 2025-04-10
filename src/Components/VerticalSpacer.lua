@@ -17,7 +17,7 @@ VerticalSpacerClass.__index = VerticalSpacerClass
 function VerticalSpacerClass.new(nameSuffix: string, height: number?)
   local self = setmetatable({}, VerticalSpacerClass)
 
-  local frame = GuiUtilities.MakeStandardFixedHeightFrame("VSP " .. nameSuffix)
+  local frame = GuiUtilities.MakeStandardFixedHeightFrame("VSPF " .. nameSuffix)
   frame.BackgroundTransparency = 1
   if height then frame.Size = UDim2.new(1, 0, 0, height) end
   
