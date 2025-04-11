@@ -29,6 +29,8 @@ function ImageButtonWithTextClass.new(name: string, layoutOrder: number, icon: s
   local self = {}
   setmetatable(self, ImageButtonWithTextClass)
 
+  self._clickedFunction = nil
+
   local button = Instance.new("ImageButton")
   button.Name = name
   button.AutoButtonColor = false
@@ -93,6 +95,12 @@ function ImageButtonWithTextClass.new(name: string, layoutOrder: number, icon: s
   button.MouseButton1Up:Connect(function()
     self._clicked = false
     self:_UpdateButtonVisual()
+  end)
+
+  button.Activated:Connect(function (inputObject, timesPressed)
+    if self._clickedFunction then
+      self._clickedFunction(inputObject, timesPressed)
+    end
   end)
   
   local function updateButtonVisual()
@@ -161,6 +169,12 @@ end
 --- @return boolean -- True if the button is selected; false otherwise.
 function ImageButtonWithTextClass:GetSelected()
   return self._selected
+end
+
+--- Sets the function to be called when the button is clicked.
+--- @param cf (inputObject: InputObject, timesPressed: number) -> () -- A callback function or nil to remove the function.
+function ImageButtonWithTextClass:SetClickedFunction(cf: (inputObject: InputObject, timesPressed: number) -> () | nil)
+  self._clickedFunction = cf
 end
 
 
