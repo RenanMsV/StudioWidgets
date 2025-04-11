@@ -125,6 +125,7 @@ function LabeledColorInputPickerClass.new(nameSuffix: string, labelText: string,
   end)
 
   local colorPickerComponent = ColorPicker.new("Picker")
+  colorPickerComponent:SetValue(defaultValue)
   colorPickerComponent:GetFrame().Parent = frame
   colorPickerComponent:GetFrame().Position = UDim2.new(0, 43, 0, 30)
   colorPickerComponent:GetFrame().Visible = false
@@ -254,6 +255,7 @@ function LabeledColorInputPickerClass:SetColorValue(newValue: Color3)
   self._colorValue = newValue
   self:_UpdateColorFrame()
   self:_UpdateInputValue()
+  self._colorPickerComponent:SetValue(newValue)
 end
 
 --- Enables or disables the color picker UI.
