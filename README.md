@@ -106,7 +106,7 @@ button:GetFrame().Parent = widgetGui
 ```
 
 #### CustomTextButton.lua
-A text button contained in an image (rounded rect).  Button and frame highlight appropriately on hover and click.
+A text button contained in a Frame. Button and frame highlight appropriately on hover and click.
 
 Light | Dark
 :-:|:-:
@@ -332,7 +332,7 @@ multiChoice:GetFrame().Parent = widgetGui
 ```
 
 #### LabeledRadioButton.lua
-Creates a component containing a label and a radio button
+Creates a component containing a label and a radio button.
 
 #### LabeledSlider.lua
 A component comprising a label and a slider control.
@@ -550,6 +550,7 @@ The easiest way to bring the project into studio is to use the [HttpService](htt
 
 ```Lua
 local HttpService = game:GetService("HttpService")
+HttpService.HttpEnabled = true
 local Branch = "master"
 
 local function FetchFiles(url, parent)
