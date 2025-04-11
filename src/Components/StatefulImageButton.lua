@@ -21,6 +21,8 @@ function StatefulImageButtonClass.new(buttonName: string, imageAsset: string, bu
   local self = {}
   setmetatable(self, StatefulImageButtonClass)
 
+  self._clickedFunction = nil
+
   local button = Instance.new("ImageButton")
   --button.Parent = parent
   button.Image = imageAsset
@@ -59,6 +61,12 @@ function StatefulImageButtonClass.new(buttonName: string, imageAsset: string, bu
   button.MouseButton1Up:Connect(function()
     self._clicked = false
     self:_UpdateButtonVisual()
+  end)
+
+  button.Activated:Connect(function (inputObject, timesPressed)
+    if self._clickedFunction then
+      self._clickedFunction(inputObject, timesPressed)
+    end
   end)
   
   self:_UpdateButtonVisual()
@@ -106,6 +114,12 @@ end
 --- @return ImageButton -- The ImageButton instance.
 function StatefulImageButtonClass:GetButton()
   return self._button
+end
+
+--- Sets the function to be called when the button is clicked.
+--- @param cf (inputObject: InputObject, timesPressed: number) -> () -- A callback function or nil to remove the function.
+function StatefulImageButtonClass:SetClickedFunction(cf: (inputObject: InputObject, timesPressed: number) -> () | nil)
+  self._clickedFunction = cf
 end
 
 return StatefulImageButtonClass
