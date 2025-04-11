@@ -252,7 +252,7 @@ end
 
 --- Returns whether the checkbox is currently disabled.
 --- @return boolean -- True if the checkbox is disabled; otherwise false.
-function LabeledCheckboxClass:GetDisabled()
+function LabeledCheckboxClass:GetDisabled(): boolean
   return self._disabled
 end
 
