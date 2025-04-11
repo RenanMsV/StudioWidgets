@@ -159,21 +159,58 @@ function ColorPickerClass:_CalculatePickedColor(inputObject: InputObject)
       colorPicked = fullColor:Lerp(Color3.new(0,0,0), alpha)
     end
     
-    -- after finding it, generate a color code string like this: R,G,B #HEX
-    local R, G, B = 0, 0, 0
-    R = math.clamp(math.round(colorPicked.R * 255), 0, 255)
-    G = math.clamp(math.round(colorPicked.G * 255), 0, 255)
-    B = math.clamp(math.round(colorPicked.B * 255), 0, 255)
-    
-    self._colorReference.BackgroundColor3 = colorPicked
-    self._colorCodeBox.Text = ("%d,%d,%d #%s"):format(R, G, B, string.upper(colorPicked:ToHex()))
-    self._colorCross.Position = UDim2.fromScale(relX, relY)
-    self._colorCross.ImageColor3 = if GuiUtilities.GetColorOverallBrightness(colorPicked) < 0.4 then Color3.new(1,1,1) else Color3.new(0,0,0)
     self._colorPicked = colorPicked
+    self:_SetArrowPosFromClickPos(relX, relY)
+    self:_UpdateColorCodeLabel()
+    self:_UpdateColorReferenceRect()
+    
     if self._valueChangedFunction then -- fire value changed function
       self._valueChangedFunction(colorPicked)
     end
   end
+end
+
+function ColorPickerClass:_SetArrowPosFromClickPos(relX: number, relY: number)
+  -- sets the arrow position taking the relative X and Y position of the click
+  -- also paints it
+  self._colorCross.Position = UDim2.fromScale(relX, relY)
+  self._colorCross.ImageColor3 = if GuiUtilities.GetColorOverallBrightness(self._colorPicked) < 0.4 then Color3.new(1,1,1) else Color3.new(0,0,0)
+end
+
+function ColorPickerClass:_SetArrowPosFromColor(color: Color3)
+	local h, s, v = Color3.toHSV(color)
+	local relX = h -- since X is mapped directly to hue
+
+	local relY
+	if s == 0 then
+		-- Grayscale: White (v = 1) to Black (v = 0)
+		relY = 1 - v
+	else
+		if v < 1 then
+			-- Interpolating from full hue to black
+			local alpha = 1 - v
+			relY = 0.5 + (alpha * 0.5)
+		else
+			-- Interpolating from white to full hue
+			local alpha = s
+			relY = (alpha * 0.5)
+		end
+	end
+
+	self._colorCross.Position = UDim2.fromScale(relX, relY)
+end
+
+function ColorPickerClass:_UpdateColorCodeLabel()
+  -- generate a color code string like this: R,G,B #HEX
+  local R, G, B = 0, 0, 0
+  R = math.clamp(math.round(self._colorPicked.R * 255), 0, 255)
+  G = math.clamp(math.round(self._colorPicked.G * 255), 0, 255)
+  B = math.clamp(math.round(self._colorPicked.B * 255), 0, 255)
+  self._colorCodeBox.Text = ("%d,%d,%d #%s"):format(R, G, B, string.upper(self._colorPicked:ToHex()))
+end
+
+function ColorPickerClass:_UpdateColorReferenceRect()
+  self._colorReference.BackgroundColor3 = self._colorPicked
 end
 
 --- Sets the function to be called when the cancel button is clicked.
@@ -208,6 +245,15 @@ end
 --- @return Color3 -- The current color selection.
 function ColorPickerClass:GetValue(): Color3
   return self._colorPicked
+end
+
+--- Sets the currently selected color in the color picker.
+--- @param newValue Color3 -- The color to set.
+function ColorPickerClass:SetValue(newValue: Color3)
+  self._colorPicked = newValue
+  self:_SetArrowPosFromColor(newValue)
+  self:_UpdateColorCodeLabel()
+  self:_UpdateColorReferenceRect()
 end
 
 return ColorPickerClass
