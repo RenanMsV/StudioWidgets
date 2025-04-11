@@ -1,6 +1,6 @@
 ----------------------------------------
 --
--- LabeledRadioButton.lua
+-- LabeledToggleButtonClass.lua
 --
 -- Creates a frame containing a label and a toggle button.
 --
