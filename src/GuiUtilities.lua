@@ -232,6 +232,24 @@ function module.BindThemeChanged(callback: () -> ()): RBXScriptConnection
   return connection
 end
 
+--- Calculates the relative position of a click within a GUI element.
+--- Returns the normalized (0 to 1) X and Y offsets based on the input object's position
+--- relative to the specified GUI element's absolute position.
+--- ```luau
+---   frame.InputBegan:Connect(function (inputObject: InputObject)
+---       local relX, relY = GuiUtilities.GetClickOffsetFromObject(inputObject, frame)
+---   end)
+--- ```
+--- @param inputObject InputObject -- The object containing the input data.
+--- @param guiObject GuiObject -- The GUI element to get the relative position within.
+--- @return number, number -- Two numbers representing the relative X and Y position.
+function module.GetClickOffsetFromObject(inputObject: InputObject, guiElement: GuiObject): (number, number)
+  local clickPos = inputObject.Position
+  local relX = (clickPos.X - guiElement.AbsolutePosition.X) / guiElement.AbsoluteSize.X
+  local relY = (clickPos.Y - guiElement.AbsolutePosition.Y) / guiElement.AbsoluteSize.Y
+  return relX, relY
+end
+
 --- Creates and returns a Frame with default background and border settings.
 --- Automatically synchronizes its background color with the Studio theme's main background.
 --- @param name string -- The name to assign to the created Frame.
