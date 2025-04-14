@@ -34,13 +34,53 @@ function ColorPickerClass.new(nameSuffix: string)
 
   local colorSpectrum = Instance.new("ImageButton")
   colorSpectrum.Name = "ColorSpectrum"
-  colorSpectrum.AnchorPoint = Vector2.new(0.5, 0)
+  colorSpectrum.AutoButtonColor = false
   colorSpectrum.BackgroundColor3 = Color3.new(1, 1, 1)
-  colorSpectrum.Image = "rbxassetid://138228531475439"
-  colorSpectrum.Position = UDim2.new(0.5, 0, 0, 7)
-  colorSpectrum.Size = UDim2.fromOffset(158, 118)
+  colorSpectrum.Image = "rbxassetid://18967417547"
+  colorSpectrum.Position = UDim2.new(0, 15, 0, 7)
+  colorSpectrum.Size = UDim2.new(0, 111, 0, 111)
+  colorSpectrum.BorderSizePixel = 1
   colorSpectrum.Parent = frame
   GuiUtilities.syncGuiElementBorderColor(colorSpectrum)
+
+  local colorBrightness = Instance.new("ImageButton")
+  colorBrightness.Name = "ColorBrightness"
+  colorBrightness.AnchorPoint = Vector2.new(0.5, 0)
+  colorBrightness.AutoButtonColor = false
+  colorBrightness.BackgroundColor3 = Color3.new(1, 1, 1)
+  colorBrightness.Image = ""
+  colorBrightness.Position = UDim2.new(1, -20, 0, 7)
+  colorBrightness.Size = UDim2.new(0, 16, 0, 107)
+  colorBrightness.BorderSizePixel = 1
+  colorBrightness.Parent = frame
+  GuiUtilities.syncGuiElementBorderColor(colorBrightness)
+
+  local colorBrightnessKnob = Instance.new("Frame")
+  colorBrightnessKnob.Name = "Knob"
+  colorBrightnessKnob.AnchorPoint = Vector2.new(0.5, 0)
+  colorBrightnessKnob.BackgroundColor3 = Color3.new(1, 1, 1)
+  colorBrightnessKnob.BorderColor3 = Color3.new()
+  colorBrightnessKnob.BorderSizePixel = 0
+  colorBrightnessKnob.Position = UDim2.fromScale(0.5, 0)
+  colorBrightnessKnob.Size = UDim2.fromOffset(25, 10)
+  colorBrightnessKnob.Parent = colorBrightness
+
+  local uIGradient = Instance.new("UIGradient")
+  uIGradient.Name = "UIGradient"
+  uIGradient.Rotation = -90
+  uIGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1)),
+  })
+  uIGradient.Parent = colorBrightness
+
+  local uiStroke = Instance.new("UIStroke")
+  uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+  uiStroke.Parent = colorBrightnessKnob
+
+  local uiCorner = Instance.new("UICorner")
+  uiCorner.CornerRadius = UDim.new(0, 4)
+  uiCorner.Parent = colorBrightnessKnob
 
   local cross = Instance.new("ImageLabel")
   cross.Name = "CrossIcon"
@@ -71,47 +111,83 @@ function ColorPickerClass.new(nameSuffix: string)
   outputContainer.Size = UDim2.fromOffset(170, 24)
   outputContainer.Parent = frame
 
-  local colorReference = Instance.new("Frame")
-  colorReference.Name = "ColorReference"
-  colorReference.AnchorPoint = Vector2.new(0, 0.5)
-  colorReference.BackgroundColor3 = Color3.new(1, 1, 1)
-  colorReference.Position = UDim2.new(0, 15, 0.5, 0)
-  colorReference.Size = UDim2.new(0, 18, 0, 18)
-  colorReference.Parent = outputContainer
-  GuiUtilities.syncGuiElementBorderColor(colorReference)
+  local colorPreviewBox = Instance.new("Frame")
+  colorPreviewBox.Name = "ColorPreview"
+  colorPreviewBox.AnchorPoint = Vector2.new(0, 0.5)
+  colorPreviewBox.BackgroundColor3 = Color3.new(1, 1, 1)
+  colorPreviewBox.Position = UDim2.new(0, 15, 0.5, 0)
+  colorPreviewBox.Size = UDim2.new(0, 18, 0, 18)
+  colorPreviewBox.Parent = outputContainer
+  GuiUtilities.syncGuiElementBorderColor(colorPreviewBox)
 
-  local colorRGBHexCode = Instance.new("TextBox")
-  colorRGBHexCode.Name = "ColorRGBHexCode"
-  colorRGBHexCode.AnchorPoint = Vector2.new(0, 0.5)
-  colorRGBHexCode.BackgroundTransparency = 0
-  colorRGBHexCode.BorderSizePixel = 0
-  colorRGBHexCode.Font = Enum.Font.SourceSans
-  colorRGBHexCode.Position = UDim2.new(0, 35, 0.5, 0)
-  colorRGBHexCode.Size = UDim2.fromOffset(124, kColorPickedLabelHeight)
-  colorRGBHexCode.Text = "255,255,255 #FFFFFF"
-  colorRGBHexCode.TextSize = 15
-  colorRGBHexCode.TextScaled = false
-  colorRGBHexCode.Parent = outputContainer
-  colorRGBHexCode.ClearTextOnFocus = false
-  colorRGBHexCode.TextEditable = false
-  GuiUtilities.syncGuiElementFontColor(colorRGBHexCode)
-  GuiUtilities.syncGuiElementInputFieldColor(colorRGBHexCode)
-  GuiUtilities.syncGuiElementBorderColor(colorRGBHexCode)
+  local colorRGBCode = Instance.new("TextBox")
+  colorRGBCode.Name = "ColorRGBCode"
+  colorRGBCode.AnchorPoint = Vector2.new(0, 0.5)
+  colorRGBCode.BackgroundColor3 = Color3.fromRGB(61, 255, 232)
+  colorRGBCode.BorderColor3 = Color3.fromRGB(34, 34, 34)
+  colorRGBCode.BorderSizePixel = 1
+  colorRGBCode.ClearTextOnFocus = false
+  colorRGBCode.Font = Enum.Font.SourceSans
+  colorRGBCode.Position = UDim2.new(0, 36, 0.5, 0)
+  colorRGBCode.Size = UDim2.fromOffset(62, 20)
+  colorRGBCode.Text = "255,255,255"
+  colorRGBCode.TextColor3 = Color3.fromRGB(204, 204, 204)
+  colorRGBCode.TextEditable = false
+  colorRGBCode.TextSize = 15
+  colorRGBCode.Parent = outputContainer
+  GuiUtilities.syncGuiElementFontColor(colorRGBCode)
+  GuiUtilities.syncGuiElementInputFieldColor(colorRGBCode)
+  GuiUtilities.syncGuiElementBorderColor(colorRGBCode)
+
+  local colorHexCode = Instance.new("TextBox")
+  colorHexCode.Name = "ColorHexCode"
+  colorHexCode.AnchorPoint = Vector2.new(0, 0.5)
+  colorHexCode.BackgroundColor3 = Color3.fromRGB(61, 255, 232)
+  colorHexCode.BorderColor3 = Color3.fromRGB(34, 34, 34)
+  colorHexCode.BorderSizePixel = 1
+  colorHexCode.ClearTextOnFocus = false
+  colorHexCode.Font = Enum.Font.SourceSans
+  colorHexCode.Position = UDim2.new(0, 101, 0.5, 0)
+  colorHexCode.Size = UDim2.fromOffset(55, 20)
+  colorHexCode.Text = "#FFFFFF"
+  colorHexCode.TextColor3 = Color3.fromRGB(204, 204, 204)
+  colorHexCode.TextEditable = false
+  colorHexCode.TextSize = 15
+  colorHexCode.Parent = outputContainer
+  GuiUtilities.syncGuiElementFontColor(colorHexCode)
+  GuiUtilities.syncGuiElementInputFieldColor(colorHexCode)
+  GuiUtilities.syncGuiElementBorderColor(colorHexCode)
 
   colorSpectrum.InputBegan:Connect(function (inputObject: InputObject)
     if inputObject.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
     self._dragging = true
-    self:_CalculatePickedColor(inputObject)
+    self:_OnColorSpectrumClick(inputObject)
   end)
 
-  colorSpectrum.InputChanged:Connect(function (inputObject)
+  colorSpectrum.InputChanged:Connect(function (inputObject: InputObject)
     if not self._dragging then return end
-    self:_CalculatePickedColor(inputObject)
+    self:_OnColorSpectrumClick(inputObject)
   end)
 
-  colorSpectrum.InputEnded:Connect(function (inputObject)
+  colorSpectrum.InputEnded:Connect(function (inputObject: InputObject)
     if inputObject.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
     self._dragging = false
+  end)
+
+  colorBrightness.InputBegan:Connect(function (inputObject: InputObject)
+    if inputObject.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+    self._draggingBrightness = true
+    self:_OnBrightnessSliderClick(inputObject)
+  end)
+
+  colorBrightness.InputChanged:Connect(function (inputObject: InputObject)
+    if not self._draggingBrightness then return end
+    self:_OnBrightnessSliderClick(inputObject)
+  end)
+
+  colorBrightness.InputEnded:Connect(function (inputObject: InputObject)
+    if inputObject.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+    self._draggingBrightness = false
   end)
 
   local verticallyScalingFrame = VerticallyScalingListFrame.new("suffix")
@@ -131,86 +207,97 @@ function ColorPickerClass.new(nameSuffix: string)
 
   self._frame = frame
   self._colorSpectrum = colorSpectrum
-  self._colorReference = colorReference
-  self._colorCodeBox = colorRGBHexCode
+  self._colorPreviewBox = colorPreviewBox
+  self._colorCodeBoxRGB = colorRGBCode
+  self._colorCodeBoxHex = colorHexCode
+  self._colorBrightnessSlider = colorBrightness
+  self._colorBrightnessKnob = colorBrightnessKnob
   self._colorCross = cross
-  self._colorPicked = Color3.new(1,1,1) :: Color3
   self._buttonCancel = buttonCancel
   self._buttonConfirm = buttonConfirm
+
+  self._colorPicked = Color3.new(1,1,1) :: Color3
+  self._colorPickedRGBCode = "255,255,255"
+  self._colorPickedHexCode = "#FFFFFF"
+
   self._dragging = false
+  self._draggingBrightness = false
+
+  self._hsvHue = 1
+  self._hsvSat = 1
+  self._hsvVal = 1
 
   return self
 end
 
-function ColorPickerClass:_CalculatePickedColor(inputObject: InputObject)
+function ColorPickerClass:_OnColorSpectrumClick(inputObject: InputObject)
   -- detect clicked color code based on the click position in the color spectrum image
-  local clickPos = inputObject.Position
-  local relX = (clickPos.X - self._colorSpectrum.AbsolutePosition.X) / self._colorSpectrum.AbsoluteSize.X
-  local relY = (clickPos.Y - self._colorSpectrum.AbsolutePosition.Y) / self._colorSpectrum.AbsoluteSize.Y
+  local relX: number, relY:number = GuiUtilities.GetClickOffsetFromObject(inputObject, self._colorSpectrum)
   if relX >= 0 and relX <= 1 and relY >= 0 and relY <= 1 then
-    local hue = relX * 360 -- Map X to Hue (0° → 360°)
-    local fullColor = Color3.fromHSV(hue / 360, 1, 1) -- Pure color
-    local colorPicked
-    if relY < 0.5 then
-      local alpha = relY * 2 -- White to Full Color
-      colorPicked = Color3.new(1,1,1):Lerp(fullColor, alpha)
-    else
-      local alpha = (relY - 0.5) * 2 -- Full Color to Black
-      colorPicked = fullColor:Lerp(Color3.new(0,0,0), alpha)
-    end
-    
-    self._colorPicked = colorPicked
-    self:_SetArrowPosFromClickPos(relX, relY)
-    self:_UpdateColorCodeLabel()
-    self:_UpdateColorReferenceRect()
-    
-    if self._valueChangedFunction then -- fire value changed function
-      self._valueChangedFunction(colorPicked)
-    end
+    self._hsvHue = relX
+    self._hsvSat = 1 - relY
+    self:_CommitColorChange()
+    self:_UpdateBrightnessSlider()
+    self:_UpdateColorCross()
   end
 end
 
-function ColorPickerClass:_SetArrowPosFromClickPos(relX: number, relY: number)
-  -- sets the arrow position taking the relative X and Y position of the click
-  -- also paints it
-  self._colorCross.Position = UDim2.fromScale(relX, relY)
-  self._colorCross.ImageColor3 = if GuiUtilities.GetColorOverallBrightness(self._colorPicked) < 0.4 then Color3.new(1,1,1) else Color3.new(0,0,0)
+function ColorPickerClass:_OnBrightnessSliderClick(inputObject: InputObject)
+  local _, relY = GuiUtilities.GetClickOffsetFromObject(inputObject, self._colorBrightnessSlider)
+  self._hsvVal = 1 - relY
+  self:_UpdateBrightnessSlider()
+  self:_CommitColorChange()
 end
 
-function ColorPickerClass:_SetArrowPosFromColor(color: Color3)
-	local h, s, v = Color3.toHSV(color)
-	local relX = h -- since X is mapped directly to hue
+function ColorPickerClass:_CommitColorChange(color: Color3?)
+  -- Applies and commits a new color to the picker.
+  -- If a Color3 parameter is provided, updates internal HSV values accordingly. Used by manually setting the value.
+  -- Otherwise, generates a color from current HSV state. Used by interacting with the picker.
+  -- Also updates UI elements and triggers the value changed callback if set.
+  if color then
+    self._colorPicked = color
+    local h, s, v = color:ToHSV()
+    self._hsvHue = h
+    self._hsvSat = s
+    self._hsvVal = v
+  else
+    self._colorPicked = Color3.fromHSV(self._hsvHue, self._hsvSat, self._hsvVal)
+  end
 
-	local relY
-	if s == 0 then
-		-- Grayscale: White (v = 1) to Black (v = 0)
-		relY = 1 - v
-	else
-		if v < 1 then
-			-- Interpolating from full hue to black
-			local alpha = 1 - v
-			relY = 0.5 + (alpha * 0.5)
-		else
-			-- Interpolating from white to full hue
-			local alpha = s
-			relY = (alpha * 0.5)
-		end
-	end
+  self:_UpdateColorCodeLabel()
+  self:_UpdateColorPreviewBox()
+  if self._valueChangedFunction then -- fire value changed function
+    self._valueChangedFunction(self._colorPicked)
+  end
+end
 
-	self._colorCross.Position = UDim2.fromScale(relX, relY)
+function ColorPickerClass:_UpdateColorCross()
+  -- positions and paint the color cross
+	self._colorCross.Position = UDim2.fromScale(self._hsvHue, 1 - self._hsvSat)
+  self._colorCross.ImageColor3 = if 1 - self._hsvSat < 0.4 then Color3.new(1,1,1) else Color3.new(0,0,0)
+end
+
+function ColorPickerClass:_UpdateBrightnessSlider()
+  self._colorBrightnessKnob.Position = UDim2.new(0.5, 0, 1 - self._hsvVal, 0)
+  self._colorBrightnessSlider.UIGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromHSV(self._hsvHue, self._hsvSat, 1)),
+  })
 end
 
 function ColorPickerClass:_UpdateColorCodeLabel()
   -- generate a color code string like this: R,G,B #HEX
-  local R, G, B = 0, 0, 0
-  R = math.clamp(math.round(self._colorPicked.R * 255), 0, 255)
-  G = math.clamp(math.round(self._colorPicked.G * 255), 0, 255)
-  B = math.clamp(math.round(self._colorPicked.B * 255), 0, 255)
-  self._colorCodeBox.Text = ("%d,%d,%d #%s"):format(R, G, B, string.upper(self._colorPicked:ToHex()))
+  local R = math.clamp(math.round(self._colorPicked.R * 255), 0, 255)
+  local G = math.clamp(math.round(self._colorPicked.G * 255), 0, 255)
+  local B = math.clamp(math.round(self._colorPicked.B * 255), 0, 255)
+  self._colorPickedHexCode = "#" .. string.upper(self._colorPicked:ToHex())
+  self._colorPickedRGBCode = ("%d,%d,%d"):format(R, G, B)
+  self._colorCodeBoxRGB.Text = self._colorPickedRGBCode
+  self._colorCodeBoxHex.Text = self._colorPickedHexCode
 end
 
-function ColorPickerClass:_UpdateColorReferenceRect()
-  self._colorReference.BackgroundColor3 = self._colorPicked
+function ColorPickerClass:_UpdateColorPreviewBox()
+  self._colorPreviewBox.BackgroundColor3 = self._colorPicked
 end
 
 --- Sets the function to be called when the cancel button is clicked.
@@ -250,10 +337,24 @@ end
 --- Sets the currently selected color in the color picker.
 --- @param newValue Color3 -- The color to set.
 function ColorPickerClass:SetValue(newValue: Color3)
-  self._colorPicked = newValue
-  self:_SetArrowPosFromColor(newValue)
-  self:_UpdateColorCodeLabel()
-  self:_UpdateColorReferenceRect()
+  self:_CommitColorChange(newValue)
+  self:_UpdateColorCross()
+  self:_UpdateBrightnessSlider()
+end
+
+--- Returns the currently picked color as a hex code string.
+--- Example: "#FFFFFF" for white.
+--- @return string -- The hex code representation of the picked color.
+function ColorPickerClass:GetHexCode(): string
+  return self._colorPickedHexCode
+end
+
+
+--- Returns the currently picked color as an RGB string.
+--- Example: "255,255,255" for white.
+--- @return string -- The RGB string representation of the picked color.
+function ColorPickerClass:GetRGBCode(): string
+  return self._colorPickedRGBCode
 end
 
 return ColorPickerClass

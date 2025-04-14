@@ -58,7 +58,7 @@ function LabeledColorInputPickerClass.new(nameSuffix: string, labelText: string,
   -- Dumb hack to add padding to text box,
   local colorFrame = Instance.new("ImageButton")
   colorFrame.Name = "Color"
-  colorFrame.AutoButtonColor = false
+  colorFrame.AutoButtonColor = true
   colorFrame.Size = UDim2.new(0, 12, 0, 12)
   colorFrame.Position = UDim2.new(0, GuiUtilities.StandardLineElementLeftMargin, .5, 0)
   colorFrame.AnchorPoint = Vector2.new(0, .5)
@@ -131,16 +131,18 @@ function LabeledColorInputPickerClass.new(nameSuffix: string, labelText: string,
   colorPickerComponent:GetFrame().Visible = false
   colorPickerComponent._buttonConfirm:GetFrame().Visible = false
   colorPickerComponent._buttonCancel:GetButton().Text = "Close"
-  colorPickerComponent._colorReference.Visible = false
-  colorPickerComponent._colorCodeBox.AnchorPoint = Vector2.new(0.5, 0.5)
-  colorPickerComponent._colorCodeBox.Position = UDim2.fromScale(0.5, 0.5)
+  colorPickerComponent._colorPreviewBox.Visible = false
+  colorPickerComponent._colorCodeBoxRGB.Position = UDim2.new(0, 26, 0.5, 0)
+  colorPickerComponent._colorCodeBoxHex.Position = UDim2.new(0, 92, 0.5, 0)
 
   colorPickerComponent:SetCancelFunction(function ()
     colorPickerComponent:GetFrame().Visible = false
   end)
 
   colorPickerComponent:SetValueChangedFunction(function (newValue: Color3)
-    self:SetColorValue(newValue)
+    self._colorValue = newValue
+    self:_UpdateColorFrame()
+    self:_UpdateInputValue()
   end)
 
   colorFrame.MouseButton1Click:Connect(function ()
@@ -165,11 +167,22 @@ function LabeledColorInputPickerClass:_UpdateColorFrame()
 end
 
 function LabeledColorInputPickerClass:_UpdateInputValue()
-  self._value = string.format("[%s, %s, %s]", tostring(round(self._colorValue.R * 255)), tostring(round(self._colorValue.G * 255)), tostring(round(self._colorValue.B * 255)))
+  self._value = if self._colorPickerEnabled then
+    `[{self._colorPickerComponent:GetRGBCode()}]`
+  else
+    string.format(
+      "[%s, %s, %s]",
+      tostring(round(self._colorValue.R * 255)),
+      tostring(round(self._colorValue.G * 255)),
+      tostring(round(self._colorValue.B * 255))
+    )
   self._textBox.Text = self._value
 end
 
 function LabeledColorInputPickerClass:_GuessColorFromInputValue()
+  --- Attempts to parse a color value from the text input.
+  --- Supports two formats: `R, G, B` (e.g., "255, 128, 0") and hex code (e.g., "#FFA500").
+  --- If a valid color is found, it updates the current color value accordingly.
   local text = self._textBox.Text
 
   -- Try matching RGB format first
@@ -255,7 +268,9 @@ function LabeledColorInputPickerClass:SetColorValue(newValue: Color3)
   self._colorValue = newValue
   self:_UpdateColorFrame()
   self:_UpdateInputValue()
-  self._colorPickerComponent:SetValue(newValue)
+  if self._colorPickerEnabled then
+    self._colorPickerComponent:SetValue(newValue)
+  end
 end
 
 --- Enables or disables the color picker UI.
