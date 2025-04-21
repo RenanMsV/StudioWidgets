@@ -35,6 +35,7 @@ Members and methods of classes that begin with '_' are considered "private": sho
 * [LabeledCheckbox.lua](#labeledcheckboxlua)
 * [LabeledColorInputPicker.lua](#labeledcolorinputpickerlua)
 * [LabeledMultiChoice.lua](#labeledmultichoicelua)
+* [LabeledNumberInput.lua](#labelednumberinputlua)
 * [LabeledRadioButton.lua](#labeledradiobuttonlua)
 * [LabeledSlider.lua](#labeledsliderlua)
 * [LabeledTextInput.lua](#labeledtextinputlua)
@@ -329,6 +330,49 @@ end)
 
 -- use :GetFrame() to set the parent of the LabeledMultiChoice
 multiChoice:GetFrame().Parent = widgetGui
+```
+
+#### LabeledNumberInput.lua
+A component comprising a label and text edit control that
+accepts only numbers such as intergers and floats.
+
+Light | Dark
+:-:|:-:
+![LabeledNumberInput](images/LabeledNumberInput-Light.gif)  |  ![LabeledNumberInput](images/LabeledNumberInput-Dark.gif)
+
+```Lua
+local input = LabeledNumberInput.new(
+    "suffix", -- name suffix of gui object
+    "labelText", -- text beside the input field
+    0.1, -- increment step (for the arrow buttons)
+    10 -- default value
+    false, -- whether or not the input is read-only or not
+)
+
+-- set/get graphemes which is essentially text character limit but grapemes measure things like emojis too
+input:SetMaxGraphemes(20)
+input:GetMaxGraphemes()
+
+-- set/get values methods
+input:SetValue(20.5)
+print(input:GetValue())
+
+-- set input as read-only. while read-only the content can not be edited, only copied
+input:SetReadOnly(true)
+print(input:GetReadOnly())
+
+-- fire function when input value changes
+input:SetValueChangedFunction(function(newValue: number)
+    print(newValue)
+end)
+
+-- fire function when input focus is lost
+input:SetFocusLostFunction(function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
+    print("Focus lost")
+end)
+
+-- use :GetFrame() to set the parent of the LabeledTextInput
+input:GetFrame().Parent = widgetGui
 ```
 
 #### LabeledRadioButton.lua
