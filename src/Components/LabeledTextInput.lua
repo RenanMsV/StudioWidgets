@@ -108,7 +108,7 @@ end
 
 --- Sets the function to be called when the value changes.
 --- @param vcf () -> () -- The function to call when the value changes.
-function LabeledTextInputClass:SetValueChangedFunction(vcf: () -> ())
+function LabeledTextInputClass:SetValueChangedFunction(vcf: (newValue: string) -> ())
   self._valueChangedFunction = vcf
 end
 
@@ -118,10 +118,10 @@ function LabeledTextInputClass:GetFrame(): Frame
   return self._frame
 end
 
---- Returns the current value of the input.
---- @return string -- The current value.
-function LabeledTextInputClass:GetValue(): string
-  return self._value
+--- Gets the text box itself.
+--- @return TextBox -- The text box.
+function LabeledTextInputClass:GetTextBox(): TextBox
+  return self._textBox
 end
 
 --- Returns the maximum number of graphemes allowed.
@@ -136,18 +136,18 @@ function LabeledTextInputClass:SetMaxGraphemes(newValue)
   self._MaxGraphemes = newValue
 end
 
+--- Returns the current value of the input.
+--- @return string -- The current value.
+function LabeledTextInputClass:GetValue(): string
+  return self._value
+end
+
 --- Sets this input text value.
 --- @param newValue string -- The value to set.
 function LabeledTextInputClass:SetValue(newValue: string)
   if self._value ~= newValue then
     self._textBox.Text = newValue
   end
-end
-
---- Gets the text box itself.
---- @return TextBox -- The text box.
-function LabeledTextInputClass:GetTextBox(): TextBox
-  return self._textBox
 end
 
 --- Gets this input text editable state.
@@ -173,8 +173,8 @@ function LabeledTextInputClass:SetClearTextOnFocusEnabled(state: boolean)
 end
 
 --- Sets the function that runs when focus is lost.
---- @param funct () -> () -- The function to run.
-function LabeledTextInputClass:SetFocusLostFunction(funct: () -> ())
+--- @param funct (enterPressed: boolean, inputThatCausedFocusLoss: InputObject) -> () -- The function to run.
+function LabeledTextInputClass:SetFocusLostFunction(funct: (enterPressed: boolean, inputThatCausedFocusLoss: InputObject) -> ())
   self._textBox.FocusLost:Connect(funct)
 end
 
