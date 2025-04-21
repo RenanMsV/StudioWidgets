@@ -345,7 +345,7 @@ local input = LabeledNumberInput.new(
     "suffix", -- name suffix of gui object
     "labelText", -- text beside the input field
     0.1, -- increment step (for the arrow buttons)
-    10 -- default value
+    10, -- default value
     false, -- whether or not the input is read-only or not
 )
 
@@ -419,8 +419,9 @@ Light | Dark
 ```Lua
 local input = LabeledTextInput.new(
     "suffix", -- name suffix of gui object
-    "labelText", -- title text of the multi choice
-    "Hello world!" -- default value
+    "labelText", -- text beside the input field
+    "Hello world!", -- default value
+    false, -- whether or not the input is read-only or not
 )
 
 -- set/get graphemes which is essentially text character limit but grapemes measure things like emojis too
@@ -436,8 +437,13 @@ input:SetReadOnly(true)
 print(input:GetReadOnly())
 
 -- fire function when input value changes
-input:SetValueChangedFunction(function(newValue)
+input:SetValueChangedFunction(function(newValue: string)
     print(newValue)
+end)
+
+-- fire function when input focus is lost
+input:SetFocusLostFunction(function(enterPressed: boolean, inputThatCausedFocusLoss: InputObject)
+    print("Focus lost")
 end)
 
 -- use :GetFrame() to set the parent of the LabeledTextInput
