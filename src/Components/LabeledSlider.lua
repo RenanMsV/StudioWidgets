@@ -136,6 +136,13 @@ function LabeledSliderClass:GetValue()
   return self._sliderValue.Value
 end
 
+--- Changes the label text displayed above the slider.
+--- @param labelText string -- New label text to display.
+function LabeledSliderClass:SetLabelText(labelText: string)
+  assert(type(labelText) == "string", "Expected string. Got "..type(labelText))
+  self._label.Text = labelText
+end
+
 function LabeledSliderClass:_UpdateColors()
   local guide = if GuiUtilities.GetThemeName() == "Light" then Enum.StudioStyleGuideColor.ScrollBarBackground else Enum.StudioStyleGuideColor.InputFieldBackground
   self._postThumbImage.BackgroundColor3 = GuiUtilities.GetThemeColor(guide)
